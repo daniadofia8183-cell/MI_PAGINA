@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Prog & Data: Soluciones digitales innovadoras con software a medida.">
+  <title>Prog & Data</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    /* Tu mismo CSS (no modificado) */
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: #333;
+    }
+    header {
+      background: #222;
+      color: #fff;
+      padding: 15px 0;
+      text-align: center;
+      position: relative;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      margin: 0;
+      flex-wrap: wrap;
+    }
+    nav ul li {
+      margin: 10px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    nav ul li a:hover {
+      color: #f4c2c2;
+    }
+    /* Selector de idioma */
+    #lang-select {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 5px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      background: #f4c2c2;
+      cursor: pointer;
+    }
+    section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+    h2 {
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Prog & Data</h1>
+    <!-- 🔽 Selector de idioma -->
+    <select id="lang-select">
+      <option value="es">Español</option>
+      <option value="en">English</option>
+    </select>
+
+    <nav>
+      <ul>
+        <li><a href="#intro">Inicio</a></li>
+        <li><a href="#mision">Misión</a></li>
+        <li><a href="#vision">Visión</a></li>
+        <li><a href="#valores">Valores</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="intro">
+    <h2>Bienvenido a Prog & Data</h2>
+    <p>Soluciones digitales innovadoras para tu negocio.</p>
+  </section>
+
+  <section id="mision">
+    <h2>Nuestra Misión</h2>
+    <p>Desarrollar software a medida que optimice los procesos empresariales.</p>
+  </section>
+
+  <section id="vision">
+    <h2>Nuestra Visión</h2>
+    <p>Ser líderes en innovación tecnológica y transformación digital.</p>
+  </section>
+
+  <section id="valores">
+    <h2>Valores</h2>
+    <p>Compromiso, innovación y calidad.</p>
+  </section>
+
+  <section id="contacto">
+    <h2>Contacto</h2>
+    <p>Correo: contacto@progdata.com</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Prog & Data - Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- 🔽 Script de traducción -->
+  <script>
+    const translations = {
+      es: {
+        nav_intro: "Inicio",
+        nav_mision: "Misión",
+        nav_vision: "Visión",
+        nav_valores: "Valores",
+        nav_contacto: "Contacto",
+        intro_title: "Bienvenido a Prog & Data",
+        intro_text: "Soluciones digitales innovadoras para tu negocio.",
+        mision_title: "Nuestra Misión",
+        mision_text: "Desarrollar software a medida que optimice los procesos empresariales.",
+        vision_title: "Nuestra Visión",
+        vision_text: "Ser líderes en innovación tecnológica y transformación digital.",
+        valores_title: "Valores",
+        valores_text: "Compromiso, innovación y calidad.",
+        contacto_title: "Contacto",
+        contacto_text: "Correo: contacto@progdata.com",
+        footer_text: "© 2025 Prog & Data - Todos los derechos reservados."
+      },
+      en: {
+        nav_intro: "Home",
+        nav_mision: "Mission",
+        nav_vision: "Vision",
+        nav_valores: "Values",
+        nav_contacto: "Contact",
+        intro_title: "Welcome to Prog & Data",
+        intro_text: "Innovative digital solutions for your business.",
+        mision_title: "Our Mission",
+        mision_text: "Develop custom software that optimizes business processes.",
+        vision_title: "Our Vision",
+        vision_text: "To be leaders in technological innovation and digital transformation.",
+        valores_title: "Values",
+        valores_text: "Commitment, innovation, and quality.",
+        contacto_title: "Contact",
+        contacto_text: "Email: contact@progdata.com",
+        footer_text: "© 2025 Prog & Data - All rights reserved."
+      }
+    };
+
+    const langSelect = document.getElementById("lang-select");
+
+    function translate(lang) {
+      const t = translations[lang];
+      document.querySelector('nav ul li:nth-child(1) a').textContent = t.nav_intro;
+      document.querySelector('nav ul li:nth-child(2) a').textContent = t.nav_mision;
+      document.querySelector('nav ul li:nth-child(3) a').textContent = t.nav_vision;
+      document.querySelector('nav ul li:nth-child(4) a').textContent = t.nav_valores;
+      document.querySelector('nav ul li:nth-child(5) a').textContent = t.nav_contacto;
+      document.querySelector('#intro h2').textContent = t.intro_title;
+      document.querySelector('#intro p').textContent = t.intro_text;
+      document.querySelector('#mision h2').textContent = t.mision_title;
+      document.querySelector('#mision p').textContent = t.mision_text;
+      document.querySelector('#vision h2').textContent = t.vision_title;
+      document.querySelector('#vision p').textContent = t.vision_text;
+      document.querySelector('#valores h2').textContent = t.valores_title;
+      document.querySelector('#valores p').textContent = t.valores_text;
+      document.querySelector('#contacto h2').textContent = t.contacto_title;
+      document.querySelector('#contacto p').textContent = t.contacto_text;
+      document.querySelector('footer p').textContent = t.footer_text;
+    }
+
+    langSelect.addEventListener("change", (e) => {
+      translate(e.target.value);
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Prog & Data: Soluciones digitales innovadoras con software a medida, diseño web y análisis de datos.">
+  <title>Prog & Data</title>
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Lora', serif;
+      background: #F5E6CC;
+      color: #4A3728;
+      line-height: 1.7;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+      margin: 0;
+    }
+    #login-container {
+      position: fixed;
+      bottom: 15px;
+      left: 15px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    #login-toggle {
+      width: auto;
+      margin-top: 0;
+      padding: 10px 18px;
+      font-size: 1rem;
+      border-radius: 25px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    #login-box {
+      display: none;
+      background: rgba(255, 245, 230, 0.97);
+      padding: 1.5rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      width: 300px;
+      max-width: 90vw;
+      animation: fadeInUp 0.4s ease-out;
+    }
+    #login-box.open { display: block; }
+    #login-box img { display: none; }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(60px); } to { opacity: 1; transform: translateY(0); } }
+    #login-box img { width: 150px; margin-bottom: 2rem; transition: transform 0.3s ease; }
+    #login-box img:hover { transform: scale(1.1); }
+    #login-box h2 { font-family: 'Playfair Display', serif; margin-bottom: 0.8rem; color: #4A3728; font-size: 1.6rem; font-weight: 700; }
+    input { width: 100%; padding: 14px; margin: 12px 0; border: 1px solid #EAD7BB; border-radius: 10px; background: #FFF5E6; font-size: 1.1rem; transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; }
+    input:focus { border-color: #F4C2C2; box-shadow: 0 0 12px rgba(244, 194, 194, 0.5); outline: none; transform: scale(1.02); }
+    button { width: 100%; padding: 14px; margin-top: 1.5rem; background: linear-gradient(90deg, #F4C2C2, #D3C7A6); color: #4A3728; font-family: 'Lora', serif; font-weight: 500; font-size: 1.2rem; border: none; border-radius: 10px; cursor: pointer; position: relative; overflow: hidden; transition: transform 0.3s ease; }
+    button:hover { background: linear-gradient(90deg, #EAD7BB, #F4C2C2); transform: translateY(-3px); }
+    button::after { content: 'Entrando...'; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #D3C7A6; display: none; align-items: center; justify-content: center; font-size: 1.2rem; }
+    button.loading::after { display: flex; }
+    #error { color: #A63F3F; background: #FFF5E6; padding: 12px; border-radius: 10px; margin-top: 1rem; font-size: 1rem; opacity: 0; animation: fadeIn 0.3s ease forwards; }
+    nav {
+      background: #EAD7BB;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s ease;
+    }
+    nav.scrolled { background: rgba(234, 215, 187, 0.95); }
+    nav img { width: 160px; height: auto; transition: transform 0.3s ease; }
+    nav img:hover { transform: rotate(5deg); }
+    nav ul { list-style: none; display: flex; gap: 25px; align-items: center; }
+    nav ul li a { color: #4A3728; text-decoration: none; font-family: 'Lora', serif; font-weight: 500; font-size: 1.1rem; padding: 8px 12px; position: relative; transition: color 0.3s ease; }
+    nav ul li a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0; background: #F4C2C2; transition: width 0.3s ease; }
+    nav ul li a:hover::after { width: 100%; }
+    nav ul li a:hover { color: #F4C2C2; }
+    .hamburger { display: none; font-size: 1.8rem; color: #4A3728; cursor: pointer; }
+    #main-content { display: block; flex: 1; padding: 1.5rem; }
+    .section { display: none; margin: 2rem auto; max-width: 1200px; padding: 2rem; border-radius: 15px; background: linear-gradient(135deg, rgba(255, 245, 230, 0.95), rgba(244, 194, 194, 0.15)); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); width: 100%; animation: fadeIn 0.5s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .section h2 { font-family: 'Playfair Display', serif; color: #4A3728; margin-bottom: 1.5rem; border-bottom: 2px solid #F4C2C2; padding-bottom: 10px; font-size: 2.2rem; font-weight: 700; }
+    .section p { font-size: 1.1rem; line-height: 1.6; }
+    .intro { text-align: center; padding: 3rem 1rem; background: url("IMG/Fondo.PNG") no-repeat center center/cover; background-attachment: fixed; color: #4A3728; border-radius: 15px; margin-bottom: 1.5rem; position: relative; overflow: hidden; }
+    .intro::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 245, 230, 0.85); z-index: 1; }
+    .intro > * { position: relative; z-index: 2; }
+    .intro img { width: 140px; margin-bottom: 1.2rem; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+    .card { background: #FFF5E6; padding: 1.5rem; border-radius: 12px; border: 1px solid #EAD7BB; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; display: flex; align-items: center; gap: 1rem; }
+    .card i { font-size: 1.8rem; color: #F4C2C2; transition: color 0.3s ease; }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); background: #F4C2C2; color: #4A3728; }
+    .card:hover i { color: #FFF5E6; }
+    .audio-container { text-align: center; }
+    .audio-container audio { width: 100%; max-width: 550px; margin-top: 1.5rem; border-radius: 10px; outline: none; background: #EAD7BB; }
+    .audio-container audio::-webkit-media-controls-panel { background: linear-gradient(90deg, #F4C2C2, #D3C7A6); border-radius: 10px; }
+    footer { background: #EAD7BB; color: #4A3728; padding: 2.5rem 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; align-items: start; text-align: center; box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1); }
+    footer .sena-logo { width: 70px; margin-bottom: 0.8rem; transition: transform 0.3s ease; }
+    footer .sena-logo:hover { transform: scale(1.15); }
+    footer .contact-info p { margin: 0.4rem 0; font-size: 1rem; }
+    footer .social-links a { color: #4A3728; font-size: 1.6rem; margin: 0 10px; transition: color 0.3s ease, transform 0.3s ease; }
+    footer .social-links a:hover { color: #F4C2C2; transform: scale(1.15); }
+    #back-to-top { position: fixed; bottom: 15px; right: 15px; background: #F4C2C2; color: #4A3728; padding: 10px; border-radius: 50%; cursor: pointer; display: none; font-size: 1.3rem; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15); transition: opacity 0.3s ease, transform 0.3s ease; }
+    #back-to-top:hover { transform: scale(1.1); background: #EAD7BB; }
+    @media (max-width: 768px) { nav { padding: 0.8rem 1.5rem; } nav img { width: 140px; } nav ul { display: none; flex-direction: column; position: absolute; top: 60px; left: 0; width: 100%; background: #EAD7BB; padding: 1.2rem; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); animation: slideIn 0.3s ease; } @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } } nav ul.active { display: flex; } .hamburger { display: block; } #login-box { width: 90%; padding: 2rem; } .section { padding: 1.2rem; margin: 1rem; } .intro { padding: 2rem 0.5rem; } .intro img { width: 120px; } footer { grid-template-columns: 1fr; } footer .sena-logo { width: 65px; } }
+    @media (max-width: 480px) { #login-box h2 { font-size: 1.8rem; } nav img { width: 120px; } .section { padding: 0.8rem; } .section h2 { font-size: 1.8rem; } .section p { font-size: 1rem; } .card { flex-direction: column; text-align: center; } .intro img { width: 110px; } footer .sena-logo { width: 55px; } }
+  </style>
+</head>
+<body>
+  <div id="login-container">
+    <button id="login-toggle" onclick="toggleLoginBox()"><i class="fas fa-user"></i> Iniciar sesión / Registrarse</button>
+    <div id="login-box">
+      <img src="IMG/logo.PNG" alt="Logo Empresa" class="logo-login" aria-label="Logo de Prog & Data">
+      <h2 id="login-title">Iniciar Sesión</h2>
+      <input type="text" id="username" placeholder="Usuario" aria-label="Nombre de usuario">
+      <input type="password" id="password" placeholder="Contraseña" aria-label="Contraseña">
+      <input type="password" id="password2" placeholder="Confirmar contraseña" style="display:none;">
+      <button id="submit-btn" onclick="submitForm()">Entrar</button>
+      <p id="error" style="display: none;">Usuario o contraseña incorrectos</p>
+      <p id="toggle-text" style="margin-top:1.2rem;">¿No tienes cuenta? <a href="#" onclick="toggleMode(); return false;">Regístrate</a></p>
+    </div>
+  </div>
+  <div id="main-content">
+    <nav>
+      <img src="IMG/logo.PNG" alt="Logo Empresa" aria-label="Logo de Prog & Data">
+      <div class="hamburger" onclick="toggleMenu()">☰</div>
+      <ul>
+        <li><a onclick="showSection('intro')" aria-label="Ir a Introducción">Introducción</a></li>
+        <li><a onclick="showSection('mision')" aria-label="Ir a Misión">Misión</a></li>
+        <li><a onclick="showSection('vision')" aria-label="Ir a Visión">Visión</a></li>
+        <li><a onclick="showSection('valores')" aria-label="Ir a Valores">Valores</a></li>
+        <li><a onclick="showSection('colores')" aria-label="Ir a Colores del Logo">Colores del Logo</a></li>
+        <li><a onclick="showSection('servicios')" aria-label="Ir a Servicios">Servicios</a></li>
+        <li><a onclick="showSection('propuesta')" aria-label="Ir a Propuesta">Propuesta</a></li>
+        <li><a onclick="showSection('pagos')" aria-label="Ir a Pagos">Pagos</a></li>
+        <li><a onclick="showSection('contacto')" aria-label="Ir a Contacto">Contacto</a></li>
+        <li><a onclick="showSection('ubicacion')" aria-label="Ir a Ubicación">Ubicación</a></li>
+        <li><a onclick="showSection('audio')" aria-label="Ir a Audio">Audio</a></li>
+      </ul>
+    </nav>
+    <div id="intro" class="section intro" data-aos="zoom-in">
+      <img src="IMG/logo.PNG" alt="Logo Prog & Data">
+      <h2>Prog & Data</h2>
+      <p>Prog & Data es una empresa de tecnología enfocada en brindar soluciones digitales simples y efectivas. Nos especializamos en el desarrollo de software a medida, diseño de páginas web, análisis de datos y soporte tecnológico. Nuestro compromiso es ayudar a empresas y emprendedores a crecer mediante herramientas inteligentes, seguras y adaptadas a sus necesidades.</p>
+    </div>
+    <div id="mision" class="section" data-aos="fade-up">
+      <h2><i class="fas fa-star"></i> Misión</h2>
+      <p>En PROG & DATA desarrollamos soluciones de software que transforman datos y conocimientos, optimizando los procesos y el crecimiento de las empresas. Nos enfocamos en la accesibilidad tecnológica para crear algo real en el mundo digital, ofreciendo herramientas innovadoras y fáciles de usar para todos nuestros clientes.</p>
+    </div>
+    <div id="vision" class="section" data-aos="fade-up">
+      <h2><i class="fas fa-eye"></i> Visión</h2>
+      <p>Ser líderes en el desarrollo de software y análisis de datos, impulsando la transformación digital con tecnología avanzada y soluciones adaptadas a las necesidades del futuro. Buscamos que PROG & DATA sea sinónimo de innovación, confianza y excelencia tecnológica con un cubrimiento global.</p>
+    </div>
+    <div id="valores" class="section" data-aos="fade-up">
+      <h2><i class="fas fa-gem"></i> Valores</h2>
+      <div class="cards">
+        <div class="card"><i class="fas fa-hand-holding-heart"></i> <div><b>Humildad:</b> Reconocemos que siempre hay espacio para aprender y mejorar. Escuchamos con apertura, valoramos las ideas del equipo y aceptamos nuestras limitaciones con la intención de crecer.</div></div>
+        <div class="card"><i class="fas fa-user-check"></i> <div><b>Orientación al cliente:</b> Ponemos al cliente en el centro de nuestras decisiones. Buscamos entender sus necesidades reales y brindar soluciones que generen valor, confianza y resultados duraderos.</div></div>
+        <div class="card"><i class="fas fa-smile"></i> <div><b>Satisfacción del empleado:</b> Creemos que un equipo motivado y feliz es la clave del éxito. Fomentamos un ambiente de trabajo positivo, justo y colaborativo, donde cada persona se sienta valorada y apoyada.</div></div>
+        <div class="card"><i class="fas fa-fire"></i> <div><b>Pasión:</b> Nos mueve el entusiasmo por lo que hacemos. Cada proyecto, cada línea de código y cada solución nace del compromiso genuino con la calidad y el impacto positivo.</div></div>
+        <div class="card"><i class="fas fa-shield-alt"></i> <div><b>Integridad:</b> Compromiso con la transparencia, la honestidad y el cumplimiento de principios éticos en todas nuestras acciones.</div></div>
+        <div class="card"><i class="fas fa-lightbulb"></i> <div><b>Innovación:</b> Búsqueda constante de nuevas ideas, soluciones y mejoras que generen valor para los clientes y mantengan a la empresa a la vanguardia.</div></div>
+      </div>
+    </div>
+    <div id="colores" class="section" data-aos="fade-up">
+      <h2><i class="fas fa-palette"></i> Colores del Logo</h2>
+      <div class="cards">
+        <div class="card"><i class="fas fa-circle" style="color: #fff;"></i> <div><b>Blanco:</b> Transparencia, innovación, modernidad.</div></div>
+        <div class="card"><i class="fas fa-circle" style="color: #808080;"></i> <div><b>Gris:</b> Profesionalismo, estabilidad, tecnología.</div></div>
+        <div class="card"><i class="fas fa-circle" style="color: #F4C2C2;"></i> <div><b>Rosado:</b> Creatividad, diferenciación, enfoque humano.</div></div>
+        <div class="card"><i class="fas fa-circle" style="color: #000;"></i> <div><b>Negro:</b> Sofisticación, poder, vanguardia y elegancia.</div></div>
+      </div>
+    </div>
+    <div id="servicios" class="section" data-aos="fade-up">
+      <h2><i class="fas fa-tools"></i> Servicios</h2>
+      <div class="cards">
+        <div class="card"><i class="fas fa-code"></i> <div><b>Software a Medida:</b> Aplicaciones personalizadas para tu negocio.<br><b>Desde:</b> $500.000 &nbsp; <b>Hasta:</b> $3.000.000<br><small>El precio depende de cuántas funciones necesites. Primero acordamos qué incluye, y el pago se divide en 50% al empezar y 50% al entregar.</small></div></div>
+        <div class="card"><i class="fas fa-globe"></i> <div><b>Páginas Web:</b> Sitios modernos y responsivos.<br><b>Desde:</b> $200.000 &nbsp; <b>Hasta:</b> $1.200.000<br><small>Se cobra según el número de secciones y si lleva login o formularios. Incluye una revisión de ajustes después de la entrega.</small></div></div>
+        <div class="card"><i class="fas fa-chart-line"></i> <div><b>Análisis de Datos:</b> Organizamos y analizamos tus datos.<br><b>Desde:</b> $150.000 &nbsp; <b>Hasta:</b> $900.000<br><small>Depende de la cantidad de datos. Entregamos un informe con gráficas y conclusiones.</small></div></div>
+        <div class="card"><i class="fas fa-headset"></i> <div><b>Soporte Técnico:</b> Asistencia tecnológica confiable.<br><b>Desde:</b> $30.000 &nbsp; <b>Hasta:</b> $200.000<br><small>Se cobra por visita o por hora de atención, según el problema.</small></div></div>
+      </div>
+    </div>
+    <div id="propuesta" class="section" data-aos="fade-up">
+      <h2><i class="fas fa-lightbulb"></i> Propuesta</h2>
+      <p>Imagina un futuro donde las empresas transforman su productividad con tecnología avanzada. En Prog & Data, proponemos "BusinessTech Evolution": una solución integral que combina software a medida, análisis de datos en tiempo real y automatización inteligente. Como en un mundo de ciencia ficción, tus procesos operativos se convierten en un sistema dinámico donde la IA optimiza decisiones, los datos revelan oportunidades ocultas y las herramientas personalizadas impulsan el crecimiento sostenible.</p>
+      <div class="cards">
+        <div class="card"><i class="fas fa-robot"></i> <div><b>IA Operativa:</b> Un asistente virtual que automatiza tareas repetitivas y sugiere estrategias basadas en datos.</div></div>
+        <div class="card"><i class="fas fa-chart-pie"></i> <div><b>Análisis en Tiempo Real:</b> Dashboards interactivos que convierten datos en insights accionables para tomar decisiones rápidas.</div></div>
+        <div class="card"><i class="fas fa-cogs"></i> <div><b>Automatización Inteligente:</b> Flujos de trabajo optimizados con herramientas que se adaptan a las necesidades de tu empresa.</div></div>
+        <div class="card"><i class="fas fa-users"></i> <div><b>Colaboración Digital:</b> Plataformas para que equipos trabajen juntos, integrando comunicación y gestión de proyectos.</div></div>
+      </div>
+    </div>
+    <div id="pagos" class="section" data-aos="fade-up">
+      <h2><i class="fas fa-credit-card"></i> Canales de Pago</h2>
+      <p>En nuestra empresa puedes realizar tus pagos de forma fácil y segura. Aceptamos:</p>
+      <div class="cards">
+        <div class="card"><i class="fas fa-mobile-screen-button" style="color: #DA0081;"></i> <div><b>Nequi</b><br>Número: 310 000 0000</div></div>
+        <div class="card"><i class="fas fa-mobile-screen-button" style="color: #E1251B;"></i> <div><b>Daviplata</b><br>Número: 320 000 0000</div></div>
+      </div>
+    </div>
+    <div id="contacto" class="section" data-aos="fade-up">
+      <h2><i class="fas fa-phone"></i> Contacto</h2>
+      <p style="font-size:1.2rem;"><b>Dania Sofía Porras Murcia</b> - 📧 <a href="mailto:daniadofia8183@gmail.com" style="color: #F4C2C2;">daniadofia8183@gmail.com</a> - 📱 3108885305</p>
+      <p style="font-size:1.2rem;"><b>Paula Alejandra Guzmán Repizo</b> - 📧 <a href="mailto:paulaguzman1021@gmail.com" style="color: #F4C2C2;">paulaguzman1021@gmail.com</a> - 📱 3203842115</p>
+    </div>
+    <div id="ubicacion" class="section" data-aos="fade-up">
+      <h2><i class="fas fa-map-marker-alt"></i> Ubicación</h2>
+      <p>Encuentra nuestra ubicación en el Colegio Enrique Olaya Herrera:</p>
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.596505332702!2d-74.07776248558281!3d4.591614296618849!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9f0f0f0f0f0f%3A0x9c8e9d9e9e9e9e9e!2sColegio+Enrique+Olaya+Herrera!5e0!3m2!1ses!2sco!4v1606793214567!5m2!1ses!2sco" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <div id="audio" class="section" data-aos="fade-up">
+      <div class="audio-container">
+        <h2><i class="fas fa-music"></i> Audio</h2>
+        <p>Escucha nuestro contenido de audio para conocer más sobre Prog & Data.</p>
+        <audio controls>
+          <source src="IMG/WhatsApp Audio 2025-10-21 at 1.42.59 PM.mpeg" type="audio/mpeg">
+          Tu navegador no soporta el elemento de audio.
+        </audio>
+      </div>
+    </div>
+  </div>
+  <div id="back-to-top" aria-label="Volver arriba"><i class="fas fa-arrow-up"></i></div>
+  <footer>
+    <div>
+      <img src="IMG/logoSenaNaranja.png" alt="Logo SENA" class="sena-logo">
+         <img src="IMG/LOGO_COLEGIO.png" alt="Logo Colegio Enrique Olaya Herrera" class="sena-logo">
+      <p>&copy; 2025 Prog & Data</p>
+    </div>
+    <div class="contact-info">
+      <p>Creado por: <b>Dania Sofía Porras Murcia y Paula Alejandra Guzmán Repizo</b></p>
+      <p>Potenciamos el Futuro y Desarrollamos el presente</p>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+    function login() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      const error = document.getElementById("error");
+      const button = document.querySelector("#login-box button");
+      button.classList.add("loading");
+      setTimeout(() => {
+        button.classList.remove("loading");
+        if (user === "admin" && pass === "1234") {
+          document.getElementById("login-container").style.display = "none";
+          document.getElementById("main-content").style.display = "block";
+          document.querySelector("nav").style.display = "flex";
+          showSection('intro');
+        } else {
+          error.style.display = "block";
+          error.textContent = "Usuario o contraseña incorrectos. Intenta de nuevo.";
+        }
+      }, 1000);
+    }
+    let modoRegistro = false;
+
+    function getUsers() {
+      try { return JSON.parse(localStorage.getItem("usuarios")) || {}; }
+      catch (e) { return {}; }
+    }
+
+    function showError(msg) {
+      const error = document.getElementById("error");
+      error.textContent = msg;
+      error.style.display = "block";
+    }
+
+    function toggleMode() {
+      modoRegistro = !modoRegistro;
+      document.getElementById("login-title").textContent = modoRegistro ? "Crear Cuenta" : "Iniciar Sesión";
+      document.getElementById("password2").style.display = modoRegistro ? "block" : "none";
+      document.getElementById("submit-btn").textContent = modoRegistro ? "Registrarme" : "Entrar";
+      document.getElementById("toggle-text").innerHTML = modoRegistro
+        ? '¿Ya tienes cuenta? <a href="#" onclick="toggleMode(); return false;">Inicia sesión</a>'
+        : '¿No tienes cuenta? <a href="#" onclick="toggleMode(); return false;">Regístrate</a>';
+      document.getElementById("error").style.display = "none";
+    }
+
+    function toggleLoginBox() {
+      document.getElementById("login-box").classList.toggle("open");
+    }
+
+    function entrar() {
+      document.getElementById("login-container").style.display = "none";
+      showSection('intro');
+    }
+
+    showSection('intro');
+
+    function submitForm() {
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value;
+      const pass2 = document.getElementById("password2").value;
+      const users = getUsers();
+      const clave = user.toLowerCase();
+
+      if (!user || !pass) { showError("Completa todos los campos."); return; }
+
+      if (modoRegistro) {
+        if (pass.length < 4) { showError("La contraseña debe tener mínimo 4 caracteres."); return; }
+        if (pass !== pass2) { showError("Las contraseñas no coinciden."); return; }
+        if (users[clave] || clave === "admin") { showError("Ese usuario ya existe. Elige otro."); return; }
+        users[clave] = pass;
+        localStorage.setItem("usuarios", JSON.stringify(users));
+        entrar();
+      } else {
+        if ((user === "admin" && pass === "1234") || users[clave] === pass) {
+          entrar();
+        } else {
+          showError("Usuario o contraseña incorrectos.");
+        }
+      }
+    }
+
+    document.getElementById("login-box").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") submitForm();
+    });
+
+    function showSection(id) {
+      const sections = document.querySelectorAll(".section");
+      sections.forEach(sec => { sec.style.opacity = "0"; sec.style.display = "none"; });
+      const targetSection = document.getElementById(id);
+      targetSection.style.display = "block";
+      setTimeout(() => { targetSection.style.opacity = "1"; }, 10);
+    }
+    function toggleMenu() {
+      const navUl = document.querySelector("nav ul");
+      navUl.classList.toggle("active");
+    }
+    const backToTop = document.getElementById("back-to-top");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) { backToTop.style.display = "block"; backToTop.style.opacity = "1"; }
+      else { backToTop.style.opacity = "0"; setTimeout(() => { backToTop.style.display = "none"; }, 300); }
+    });
+    backToTop.addEventListener("click", () => { window.scrollTo({ top: 0, behavior: "smooth" }); });
+    window.addEventListener("scroll", () => {
+      const nav = document.querySelector("nav");
+      if (window.scrollY > 50) { nav.classList.add("scrolled"); } else { nav.classList.remove("scrolled"); }
+    });
+  </script>
+</body>
+</html>

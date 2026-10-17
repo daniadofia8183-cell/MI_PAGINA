@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prog & Data</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background:#f4f0f9;
+      color: #333;
+      line-height: 1.8;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ===== LOGIN ===== */
+    #login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: url("IMG/Fondo.PNG") no-repeat center center/cover;
+    }
+
+    #login-box {
+      background: rgba(255,255,255,0.9);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0px 8px 25px rgba(0,0,0,0.3);
+      text-align: center;
+      width: 400px;
+      transition: transform 0.3s ease;
+    }
+    #login-box:hover { transform: scale(1.05); }
+
+    #login-box img {
+      width: 150px;
+      margin-bottom: 1.5rem;
+    }
+
+    #login-box h2 {
+      margin-bottom: 1rem;
+      color: #000;
+      font-size: 2rem;
+    }
+
+    input {
+      width: 90%;
+      padding: 14px;
+      margin: 12px 0;
+      border: 1px solid #dee2e6;
+      border-radius: 12px;
+      background: #f8f9fa;
+      font-size: 1.2rem;
+    }
+    input:focus {
+      border: 1px solid #f783ac;
+      box-shadow: 0px 0px 8px rgba(230, 73, 128, 0.5);
+      outline: none;
+    }
+
+    button {
+      width: 95%;
+      padding: 14px;
+      margin-top: 15px;
+      background: linear-gradient(90deg, #f783ac, #000000);
+      color: white;
+      font-weight: bold;
+      font-size: 1.3rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: linear-gradient(90deg, #e64980, #6c757d);
+      transform: scale(1.05);
+    }
+
+    /* ===== CONTENIDO PRINCIPAL ===== */
+    #main-content { 
+      display: none; 
+      flex: 1; /* Para que el contenido empuje el footer abajo */
+    }
+
+    nav {
+      background: #000;
+      padding: 1.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    nav img { 
+      height: 100px; /* 🔥 Logo más grande */
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 35px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1.6rem;
+      transition: 0.3s;
+    }
+    nav ul li a:hover { color: #f783ac; }
+
+    /* ===== SECCIONES ===== */
+    .section {
+      display: none;
+      margin: 60px auto;
+      max-width: 1100px;
+      padding: 60px;
+      border-radius: 25px;
+      box-shadow: 0px 6px 20px rgba(0,0,0,0.1);
+      background: url("IMG/Fondo.PNG") no-repeat center center/cover;
+      background-attachment: fixed;
+      color: #000;
+      position: relative;
+    }
+
+    .section > * {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 20px;
+      border-radius: 15px;
+    }
+
+    .section h2 {
+      color: #e64980;
+      margin-bottom: 25px;
+      border-bottom: 3px solid #f783ac;
+      display: inline-block;
+      padding-bottom: 8px;
+      font-size: 2.4rem;
+    }
+
+    .section p {
+      font-size: 1.4rem;
+      line-height: 2;
+    }
+
+    .intro { text-align: center; }
+    .intro img { width: 220px; margin-bottom: 20px; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: #f8f9fa;
+      padding: 30px;
+      border-radius: 18px;
+      border: 1px solid #dee2e6;
+      color: #000;
+      font-size: 1.3rem;
+      box-shadow: 0px 3px 15px rgba(0,0,0,0.08);
+      transition: 0.3s;
+    }
+    .card:hover { 
+      transform: translateY(-8px); 
+      background: #f783ac; 
+      color: white; 
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #000;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.2rem;
+    }
+    footer p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== LOGIN ===== -->
+  <div id="login-container">
+    <div id="login-box">
+        <img src="IMG/logo.PNG" alt="Logo Empresa" width="350">
+      <h2>Iniciar Sesión</h2>
+      <input type="text" id="username" placeholder="Usuario">
+      <input type="password" id="password" placeholder="Contraseña">
+      <button onclick="login()">Entrar</button>
+      <p id="error" style="color:red; display:none;">Usuario o contraseña incorrectos</p>
+    </div>
+  </div>
+
+  <!-- ===== CONTENIDO PRINCIPAL ===== -->
+  <div id="main-content">
+    <!-- Navbar -->
+    <nav>
+      <img src="IMG/logo.PNG" alt="Logo Empresa">
+      <ul>
+        <li><a onclick="showSection('intro')">Introducción</a></li>
+        <li><a onclick="showSection('mision')">Misión</a></li>
+        <li><a onclick="showSection('vision')">Visión</a></li>
+        <li><a onclick="showSection('valores')">Valores</a></li>
+        <li><a onclick="showSection('colores')">Colores del Logo</a></li>
+        <li><a onclick="showSection('servicios')">Servicios</a></li>
+        <li><a onclick="showSection('pagos')">Pagos</a></li>
+        <li><a onclick="showSection('contacto')">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <!-- (Secciones...) -->
+
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>Creado por: <b>Dania Sofía Porras Murcia y Paula Alejandra Guzmán Repizo</b></p>
+    <p>&copy; 2025 Prog & Data</p>
+  </footer>
+
+  <script>
+    function login() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      if(user === "admin" && pass === "1234"){ 
+        document.getElementById("login-container").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+        showSection('intro'); 
+      } else {
+        document.getElementById("error").style.display = "block";
+      }
+    }
+
+    function showSection(id) {
+      const sections = document.querySelectorAll(".section");
+      sections.forEach(sec => sec.style.display = "none");
+      document.getElementById(id).style.display = "block";
+    }
+  </script>
+</body>
+</html>
